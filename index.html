@@ -27,12 +27,18 @@ body{
     linear-gradient(90deg,rgba(47,213,200,.05) 1px,transparent 1px) 0 0/32px 32px,
     linear-gradient(180deg,var(--night),var(--deep));
 }
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
+#dust{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+header,main{position:relative;z-index:1}
 header{max-width:960px;margin:0 auto;padding:40px 20px 24px}
-h1{font-family:var(--head);font-weight:400;font-size:clamp(22px,4.6vw,40px);line-height:1.35;margin:0;color:var(--gold);text-shadow:4px 4px 0 #000}
+h1{font-family:var(--head);font-weight:400;font-size:clamp(22px,4.6vw,40px);line-height:1.35;margin:0;color:var(--gold);
+  text-shadow:4px 4px 0 #000,0 0 22px rgba(232,181,58,.35);animation:glow 5s steps(10) infinite}
+@keyframes glow{50%{text-shadow:4px 4px 0 #000,0 0 12px rgba(232,181,58,.18)}}
 main{max-width:960px;margin:0 auto;padding:12px 20px 80px}
 
-/* Admin-Leiste */
-.bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 36px;min-height:48px}
+/* Leiste oben */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 36px;min-height:48px}
 .bar form,#loggedIn{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 .bar input{font-family:var(--body);font-size:22px;width:140px;padding:8px 10px;color:var(--paper);background:var(--night);
   border:4px solid #000;box-shadow:inset 0 0 0 3px var(--line)}
@@ -42,28 +48,42 @@ main{max-width:960px;margin:0 auto;padding:12px 20px 80px}
 
 /* Regal */
 .shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:44px 28px;padding:32px 24px 0;
-  background:var(--wood-dark);border:4px solid #000;box-shadow:inset 0 0 0 4px var(--wood)}
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,181,58,.16),transparent 65%),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 4px,transparent 4px 64px),var(--wood-dark);
+  border:4px solid #000;box-shadow:inset 0 0 0 4px var(--wood)}
 .slot{position:relative;padding-bottom:26px}
 .slot::after{content:"";position:absolute;left:-24px;right:-24px;bottom:0;height:22px;background:var(--wood-light);
   border-top:4px solid #a8723e;border-bottom:4px solid #000}
-.book{position:relative;display:block;width:100%;aspect-ratio:3/4;border:4px solid #000;padding:18px 14px 14px 30px;text-align:left;
-  color:#fff;cursor:pointer;font:inherit;background:var(--c);
+.book{position:relative;display:block;width:100%;aspect-ratio:3/4;border:4px solid #000;padding:18px 14px 14px 32px;text-align:left;
+  color:#fff;cursor:pointer;font:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 45%),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.09) 0 2px,transparent 2px 4px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 2px,transparent 2px 4px),var(--c);
   box-shadow:inset -6px 0 0 rgba(0,0,0,.25),inset 0 -6px 0 rgba(0,0,0,.25),6px 6px 0 rgba(0,0,0,.45);
   transition:transform .12s steps(2)}
-.book::before{content:"";position:absolute;left:0;top:0;bottom:0;width:16px;background:rgba(0,0,0,.35);border-right:4px solid #000}
-.book::after{content:"";position:absolute;left:30px;right:14px;top:96px;height:4px;background:var(--gold);opacity:.8}
-.book:hover,.book:focus-visible{transform:translateY(-8px)}
+.book::before{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;border-right:4px solid #000;
+  background:linear-gradient(var(--gold),var(--gold)) 0 14%/100% 4px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 0 86%/100% 4px no-repeat,rgba(0,0,0,.4)}
+.book::after{content:"";position:absolute;left:26px;right:10px;top:10px;bottom:10px;border:3px solid rgba(232,181,58,.5);pointer-events:none}
+.book:hover,.book:focus-visible{transform:translateY(-8px) rotate(-1.5deg)}
 .book:focus-visible{outline:4px solid var(--teal);outline-offset:4px}
-.book .band{font-family:var(--head);font-size:10px;color:var(--gold);display:block;margin-bottom:14px;min-height:16px}
-.book .title{font-family:var(--head);font-size:13px;line-height:1.6;display:block;text-shadow:2px 2px 0 #000}
-.book .lock{position:absolute;right:12px;bottom:12px;width:40px;height:40px}
+.book .plate{display:block;background:rgba(0,0,0,.4);border:3px solid rgba(232,181,58,.8);padding:10px 8px 4px;margin-top:10px;text-align:center}
+.book .band{font-family:var(--head);font-size:10px;color:var(--gold);display:block;margin-bottom:12px;min-height:16px}
+.book .title{font-family:var(--head);font-size:13px;line-height:1.6;display:block;text-shadow:2px 2px 0 #000;margin-bottom:6px}
+.book .lock{position:absolute;right:16px;bottom:16px;width:40px;height:40px}
 .book.open .lock{display:none}
-.glyph{display:block;height:22px;width:auto;margin:0 0 8px;color:#fff;filter:drop-shadow(2px 2px 0 #000)}
-.glyph.small{height:16px;color:var(--gold);margin-bottom:14px}
+.book .rb{position:absolute;right:26px;bottom:-14px;width:16px;height:38px;background:#b22222;border:3px solid #000;border-top:0}
+.book .cd{position:absolute;left:34px;bottom:16px;display:block;font-family:var(--head);font-size:9px;line-height:1.8;color:var(--gold);text-shadow:2px 2px 0 #000}
+.book .cd span{display:block;color:#fff;opacity:.85}
+.book .cd b{display:block;font-weight:400}
+.glyph{display:block;height:22px;width:auto;margin:0 auto 8px;color:#fff;filter:drop-shadow(2px 2px 0 #000)}
+.glyph.small{height:16px;color:var(--gold);margin-bottom:12px}
+.load{grid-column:1/-1;margin:0 0 26px;color:var(--paper)}
 
 /* Dialoge */
 .overlay{position:fixed;inset:0;background:rgba(2,6,12,.82);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
 .overlay.show{display:flex}
+#bookOverlay{z-index:12}
 .box{width:min(420px,100%);background:var(--panel);border:4px solid #000;box-shadow:inset 0 0 0 4px var(--line),8px 8px 0 #000;padding:28px 24px;text-align:center}
 .box h2{font-family:var(--head);font-weight:400;font-size:15px;line-height:1.7;margin:0 0 8px;color:var(--gold)}
 .box p{margin:0 0 18px;color:#bcd3e0}
@@ -84,32 +104,86 @@ main{max-width:960px;margin:0 auto;padding:12px 20px 80px}
 .shake{animation:shake .35s steps(6)}
 @keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
 
-/* Akte / Editor */
+/* Editor (nur Admin) */
 .file{width:min(680px,100%);max-height:90vh;overflow:auto;background:var(--paper);color:var(--ink);border:4px solid #000;
   box-shadow:inset 0 0 0 4px #bdb394,8px 8px 0 #000;padding:32px 30px;font-size:24px;line-height:1.4}
 .file h2{font-family:var(--head);font-weight:400;font-size:16px;line-height:1.7;margin:0 0 6px;color:#7a1f1f}
 .file .sub{font-family:var(--head);font-size:10px;color:#5a5340;margin:0 0 22px}
-.file p{margin:0 0 14px;max-width:60ch}
-.file label{display:block;font-family:var(--head);font-size:10px;color:#5a5340;margin:14px 0 6px}
+.file label{display:block;font-family:var(--head);font-size:10px;line-height:1.6;color:#5a5340;margin:14px 0 6px}
 .file input,.file textarea{width:100%;font-family:var(--body);font-size:22px;color:var(--ink);background:#f6f1e1;border:4px solid #000;padding:8px 10px}
-.file textarea{min-height:220px;resize:vertical;line-height:1.35}
+.file textarea{min-height:240px;resize:vertical;line-height:1.35}
 .file input:focus,.file textarea:focus{outline:4px solid var(--teal);outline-offset:0}
 .file label.chk{display:flex;gap:10px;align-items:flex-start;font-family:var(--body);font-size:22px;color:var(--ink);margin:14px 0 0}
 .file input[type=checkbox]{width:24px;height:24px;margin-top:4px;flex:none}
 .file .hint{font-size:20px;color:#5a5340;margin:10px 0 0}
 .file .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 
-.load{grid-column:1/-1;margin:0 0 26px;color:var(--paper)}
+/* Buch (Leseansicht) */
+#bookOverlay{z-index:12;background:radial-gradient(ellipse at center,rgba(50,30,10,.6),rgba(2,6,12,.93))}
+.stage{width:min(980px,100%);display:flex;flex-direction:column;align-items:center;gap:14px;animation:bookIn .25s steps(6)}
+@keyframes bookIn{from{transform:scale(.8) translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.plaque{font-family:var(--head);font-size:11px;line-height:1.7;color:var(--gold);background:#1a0f06;border:4px solid #000;
+  box-shadow:inset 0 0 0 3px #8a5a31;padding:8px 16px;text-align:center;max-width:100%}
+.tome{position:relative;width:100%;padding:16px;border:4px solid #000;
+  background:linear-gradient(135deg,rgba(255,255,255,.16),transparent 45%),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.1) 0 2px,transparent 2px 4px),var(--cv,#1f4f8f);
+  box-shadow:inset 0 0 0 4px rgba(0,0,0,.35),inset 0 0 0 7px rgba(232,181,58,.55),10px 10px 0 #000}
+.spread{display:flex;position:relative}
+.leaf{position:relative;flex:1;min-width:0;color:#241d12;border:3px solid #000;padding:22px 26px 44px}
+.leaf.l{border-right:0;transform-origin:right center;
+  background:linear-gradient(90deg,#efe6ca 0%,#e8dcbb 80%,#cdbf96 100%);
+  box-shadow:inset 0 0 40px rgba(120,90,40,.22),-4px 0 0 #d6c9a4,-8px 0 0 #bfb18a}
+.leaf.r{border-left:0;transform-origin:left center;
+  background:linear-gradient(270deg,#efe6ca 0%,#e8dcbb 80%,#cdbf96 100%);
+  box-shadow:inset 0 0 40px rgba(120,90,40,.22),4px 0 0 #d6c9a4,8px 0 0 #bfb18a}
+.gutter{width:6px;background:#000;flex:none}
+@media (max-width:759px){
+  .leaf.r,.gutter{display:none}
+  .leaf.l{border-right:3px solid #000;transform-origin:center;padding:18px 16px 44px}
+  .tome{padding:10px}
+}
+.leaf.turning{animation:turn .22s steps(5)}
+@keyframes turn{0%{transform:scaleX(1);opacity:1}45%,55%{transform:scaleX(.06);opacity:.5}100%{transform:scaleX(1);opacity:1}}
+.bk-page{height:clamp(320px,58vh,500px);overflow:hidden;font-size:23px;line-height:1.3;outline:none}
+.bk-page p{margin:0 0 12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bk-page h3{font-family:var(--head);font-weight:400;font-size:14px;line-height:1.7;margin:0 0 14px;color:#7a1f1f}
+.bk-page figure{margin:0 0 12px}
+.bk-page img{display:block;width:100%;height:180px;object-fit:contain;background:rgba(0,0,0,.08);border:3px solid #000;font-size:18px}
+.bk-page figcaption{font-size:20px;line-height:1.2;color:#5a4b30;text-align:center;margin-top:4px;height:24px;overflow:hidden}
+.pn{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-family:var(--head);font-size:9px;color:#8a7650}
+.tp{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;position:relative}
+.tp .tb{font-family:var(--head);font-size:11px;color:#7a1f1f;letter-spacing:2px}
+.tp .tt{font-family:var(--head);font-size:clamp(15px,2.2vw,21px);line-height:1.7;color:#241d12;overflow-wrap:anywhere;max-width:100%}
+.tp .orn{width:140px;height:6px;background:linear-gradient(90deg,transparent,#7a1f1f 20%,#7a1f1f 80%,transparent)}
+.tp .stamp{position:absolute;right:-4px;bottom:22px;transform:rotate(-14deg);font-family:var(--head);font-size:12px;color:#b22222;
+  border:4px solid #b22222;padding:8px 10px;opacity:.85;letter-spacing:2px}
+.bk-arrow{position:absolute;bottom:26px;width:56px;height:38px;border:4px solid #000;background:#3d7a2f;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),inset 3px 3px 0 rgba(255,255,255,.25)}
+.bk-arrow:hover{background:#4a9238}
+.bk-arrow:focus-visible{outline:4px solid var(--teal);outline-offset:2px}
+.bk-arrow::before{content:"";display:block;border-style:solid;border-color:transparent;border-width:9px 0}
+#bkPrev{left:32px}#bkPrev::before{border-right:13px solid #fff;border-left:0}
+#bkNext{right:32px}#bkNext::before{border-left:13px solid #fff;border-right:0}
+.bk-under{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;color:var(--paper)}
+.file .tb{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.file .tb button{width:30px;height:30px;border:3px solid #000;cursor:pointer;padding:0;font-family:var(--head);font-size:10px;color:#fff}
+.file .tb button.f{width:auto;padding:0 8px;background:#e9dfc2;color:#241d12}
+.file .tb input{width:44px;height:30px;padding:0;border:3px solid #000;cursor:pointer}
+.file input[type=color]{width:90px;height:44px;padding:2px;cursor:pointer}
+
 .toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:20;max-width:90vw;text-align:center;
   background:var(--panel);color:var(--paper);border:4px solid #000;box-shadow:inset 0 0 0 3px var(--line),6px 6px 0 #000;
   padding:12px 20px;font-size:22px;display:none}
 .toast.show{display:block}
-@media (prefers-reduced-motion:reduce){.book,.shake{animation:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.book,.shake,.stage,h1,.leaf.turning{animation:none;transition:none}}
 </style>
 </head>
 <body>
+<canvas id="dust" aria-hidden="true"></canvas>
 <header>
   <div class="bar" id="bar">
+    <button class="btn" id="sndBtn" type="button" aria-pressed="false">♪ Ton: aus</button>
     <form id="loginForm" autocomplete="off">
       <input id="user" type="text" placeholder="Benutzer" aria-label="Benutzername">
       <input id="pass" type="password" placeholder="Passwort" aria-label="Passwort">
@@ -118,6 +192,7 @@ main{max-width:960px;margin:0 auto;padding:12px 20px 80px}
     </form>
     <div id="loggedIn" hidden>
       <span class="who">Angemeldet als admin</span>
+      <span class="who" id="conn" hidden></span>
       <button class="btn" id="logout" type="button">Abmelden</button>
     </div>
   </div>
@@ -141,39 +216,64 @@ main{max-width:960px;margin:0 auto;padding:12px 20px 80px}
   </div>
 </div>
 
-<!-- Akte lesen / bearbeiten -->
+<!-- Editor (nur Admin) -->
 <div class="overlay" id="fileOverlay" role="dialog" aria-modal="true" aria-labelledby="fileTitle">
   <div class="file" id="fileBox">
     <h2 id="fileTitle"></h2>
     <p class="sub" id="fileSub"></p>
     <div id="fileText"></div>
     <div class="row">
-      <button class="btn" id="saveFile" type="button" hidden>Speichern</button>
+      <button class="btn" id="saveFile" type="button">Speichern</button>
+      <button class="btn" id="previewFile" type="button">Vorschau</button>
       <button class="btn" id="closeFile" type="button">Schließen</button>
     </div>
   </div>
 </div>
 
+<!-- Buch -->
+<div class="overlay" id="bookOverlay" role="dialog" aria-modal="true" aria-labelledby="bkTitle">
+  <div class="stage">
+    <div class="plaque" id="bkTitle"></div>
+    <div class="tome" id="bkBox">
+      <div class="spread">
+        <div class="leaf l" id="leafL"><div class="bk-page" id="bkPage" tabindex="0" aria-live="polite"></div><div class="pn" id="pnL"></div></div>
+        <div class="gutter"></div>
+        <div class="leaf r" id="leafR"><div class="bk-page" id="bkPage2"></div><div class="pn" id="pnR"></div></div>
+      </div>
+      <button class="bk-arrow" id="bkPrev" type="button" aria-label="Vorherige Seite"></button>
+      <button class="bk-arrow" id="bkNext" type="button" aria-label="Nächste Seite"></button>
+    </div>
+    <div class="bk-under"><span id="bkCount"></span><button class="btn" id="bkDone" type="button">Fertig</button></div>
+  </div>
+</div>
+
 <script>
-// ====== EINSTELLUNGEN (Codes, Texte, Admin-Login) ======
+// ====== EINSTELLUNGEN ======
+// Web-App-URL aus Google Apps Script (endet auf /exec). Leer lassen = nur die Werte darunter.
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzi7moCo97rmUuBYwCaHcIE7NNZYOwNelBjrUPVuO_-PZ-_RYjnGi3feZ70dXlrVtQ6Vw/exec";
+// Werte für den Fall ohne Tabelle (oder wenn die Tabelle nicht erreichbar ist). Sobald die Tabelle läuft, gelten deren Werte.
 // code leer + soon:false = ohne Code offen. soon:true = noch nicht verfügbar (Zauberschrift).
+// unlock = Freischaltung als "TT.MM.JJJJ HH:MM" (leer = keine). body = Text:
+//   leere Zeile = neuer Absatz, Zeile --- = neue Seite, Zeile [bild: bilder/name.png | Beschriftung] = Bild.
 const OFFLINE_ADMIN = {user: "admin", pass: "123"};
 const OFFLINE = [
-  {title:"Labyrinth",   code:"1232", soon:false, text:["Wird morgen (Sonntag, 8. November) um 18 Uhr freigeschaltet."]},
-  {title:"Titel folgt", code:"",     soon:true,  text:["Text für Akte II."]},
-  {title:"Titel folgt", code:"",     soon:true,  text:["Text für Akte III."]},
-  {title:"Titel folgt", code:"",     soon:true,  text:["Text für Akte IV."]},
-  {title:"Titel folgt", code:"",     soon:true,  text:["Text für Akte V."]},
-  {title:"Titel folgt", code:"",     soon:true,  text:["Text für Akte VI."]}
+  {title:"Labyrinth",   code:"1232", soon:false, unlock:"", body:"Wird morgen um 18 Uhr freigeschaltet."},
+  {title:"Titel folgt", code:"",     soon:true,  unlock:"", body:"Text für Akte II."},
+  {title:"Titel folgt", code:"",     soon:true,  unlock:"", body:"Text für Akte III."},
+  {title:"Titel folgt", code:"",     soon:true,  unlock:"", body:"Text für Akte IV."},
+  {title:"Titel folgt", code:"",     soon:true,  unlock:"", body:"Text für Akte V."},
+  {title:"Titel folgt", code:"",     soon:true,  unlock:"", body:"Text für Akte VI."}
 ];
 // ====== COVER (Farben und Bandnummer) ======
 const COVERS = [
   {band:"Akte I",   color:"#1f4f8f"}, {band:"Akte II",  color:"#7a2430"}, {band:"Akte III", color:"#2c6b4a"},
   {band:"Akte IV",  color:"#6b4a9a"}, {band:"Akte V",   color:"#8a4a1c"}, {band:"Akte VI",  color:"#1a6f78"}
 ];
+OFFLINE.forEach((b, i) => { if (!b.color) b.color = COVERS[i].color; });
 // ===========================
 
 const $ = id => document.getElementById(id);
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const lockSvg = '<svg class="lock" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true">'
  + '<path fill="#000" d="M2 0h6v1h1v4H1V1h1z"/><path fill="#e8b53a" d="M3 1h4v1h1v3H2V2h1z"/><path fill="#6b4423" d="M3 2h4v2H3z"/>'
  + '<path fill="#000" d="M0 4h10v6H0z"/><path fill="#e8b53a" d="M1 5h8v4H1z"/><path fill="#000" d="M4 6h2v2H4z"/></svg>';
@@ -195,20 +295,148 @@ function glyphs(seed, n, cls){
     + '<path d="' + d + '" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="square"/></svg>';
 }
 
-// ---------- Daten (alles lokal in dieser Datei) ----------
+// ---------- Ton (alles per WebAudio erzeugt, keine Dateien) ----------
+const Snd = (function(){
+  let ctx = null, master = null, delay = null, wanted = false, ambOn = false, ambTimer = null;
+  const SCALE = [110, 164.81, 196, 220, 261.63, 293.66, 329.63, 392];
+  function ensure(){
+    if (!ctx){
+      const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = .6; master.connect(ctx.destination);
+      delay = ctx.createDelay(1); delay.delayTime.value = .38;
+      const fb = ctx.createGain(), wet = ctx.createGain(); fb.gain.value = .45; wet.gain.value = .5;
+      delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(master);
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return true;
+  }
+  function env(g, t, a, d, v){
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+  }
+  function noise(dur, f0, f1, vol){
+    if (!wanted || !ensure()) return;
+    const n = Math.floor(ctx.sampleRate * dur), buf = ctx.createBuffer(1, n, ctx.sampleRate), data = buf.getChannelData(0);
+    for (let i = 0; i < n; i++) data[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource(); src.buffer = buf;
+    const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.Q.value = 1.2;
+    const t = ctx.currentTime; bp.frequency.setValueAtTime(f0, t); bp.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    const g = ctx.createGain(); env(g, t, dur * .2, dur * .8, vol);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t);
+  }
+  function tone(freq, dur, type, vol, after, wet){
+    if (!wanted || !ensure()) return;
+    const t = ctx.currentTime + (after || 0), o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || "sine"; o.frequency.value = freq; env(g, t, Math.min(.02, dur / 4), dur, vol);
+    o.connect(g); g.connect(master); if (wet) g.connect(delay); o.start(t); o.stop(t + dur + .1);
+  }
+  function ambStep(){
+    if (!ambOn || !ctx) return;
+    const f = SCALE[Math.floor(Math.random() * SCALE.length)], t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = f; env(g, t, 2.5, 4.5, .05);
+    o.connect(g); g.connect(master); g.connect(delay); o.start(t); o.stop(t + 7.5);
+    ambTimer = setTimeout(ambStep, 1800 + Math.random() * 3200);
+  }
+  return {
+    set(on){ wanted = on; if (!on){ ambOn = false; clearTimeout(ambTimer); } },
+    start(){ if (!wanted || !ensure() || ambOn) return; ambOn = true; ambStep(); },
+    page(){ noise(.16, 2600, 700, .5); },
+    open(){ noise(.3, 600, 2400, .45); tone(98, .5, "triangle", .12); },
+    click(){ tone(660, .05, "square", .04); },
+    ok(){ [523.25, 659.25, 783.99].forEach((f, i) => tone(f, .5, "triangle", .14, i * .09, true)); },
+    bad(){ tone(110, .3, "square", .08); tone(82, .35, "square", .08, .12); }
+  };
+})();
+function setSound(on, silent){
+  Snd.set(on);
+  const b = $("sndBtn"); b.textContent = on ? "♪ Ton: an" : "♪ Ton: aus"; b.setAttribute("aria-pressed", on ? "true" : "false");
+  try { localStorage.setItem("felix_sound", on ? "1" : "0"); } catch (e) {}
+  if (on && !silent){ Snd.start(); Snd.click(); }
+}
+$("sndBtn").addEventListener("click", () => setSound(!($("sndBtn").getAttribute("aria-pressed") === "true")));
+(function initSound(){
+  let saved = null; try { saved = localStorage.getItem("felix_sound"); } catch (e) {}
+  if (saved === "1"){ setSound(true, true); document.addEventListener("pointerdown", () => Snd.start(), {once: true}); }
+})();
+
+// ---------- Hintergrund: schwebender Staub ----------
+(function dust(){
+  const cv = $("dust"), c = cv.getContext("2d"); let w = 0, h = 0, ps = [];
+  function size(){
+    w = cv.width = innerWidth; h = cv.height = innerHeight;
+    ps = Array.from({length: Math.round(w * h / 26000) + 20}, () => ({
+      x: Math.random() * w, y: Math.random() * h, s: 2 + Math.floor(Math.random() * 2) * 2,
+      v: .08 + Math.random() * .25, a: .12 + Math.random() * .25, p: Math.random() * 6.28, gold: Math.random() < .5}));
+  }
+  function draw(t){
+    c.clearRect(0, 0, w, h);
+    ps.forEach(q => {
+      if (!reduceMotion){ q.y -= q.v; q.x += Math.sin(t / 2500 + q.p) * .15; if (q.y < -4){ q.y = h + 4; q.x = Math.random() * w; } }
+      c.fillStyle = (q.gold ? "rgba(232,181,58," : "rgba(47,213,200,") + q.a + ")";
+      c.fillRect(Math.round(q.x), Math.round(q.y), q.s, q.s);
+    });
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  addEventListener("resize", () => { size(); if (reduceMotion) draw(0); });
+  size(); draw(0);
+})();
+
+// <timeutil>
+function parseGerman(s){
+  const m = String(s || "").trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{2})$/);
+  return m ? new Date(+m[3], +m[2] - 1, +m[1], +m[4], +m[5]).getTime() : 0;
+}
+function fmt(ms){
+  const s = Math.max(0, Math.floor(ms / 1000)), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600),
+        m = Math.floor(s % 3600 / 60), x = s % 60, p = n => String(n).padStart(2, "0");
+  return (d ? d + "T " : "") + p(h) + ":" + p(m) + ":" + p(x);
+}
+// </timeutil>
+
+// ---------- Daten (Google-Tabelle über Apps Script, sonst lokale Werte) ----------
+let online = false, offset = 0;
+let pub = [], admin = false, cred = null, adminData = null;
+function offlinePub(){
+  const now = Date.now();
+  return OFFLINE.map(b => {
+    const at = parseGerman(b.unlock), soon = !!b.soon && !(at && now >= at);
+    return {title: soon ? "" : b.title, soon, codeLen: b.code.length, unlockAt: soon ? at : 0, color: b.color};
+  });
+}
+async function call(action, data){
+  const r = await fetch(SHEETS_URL, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify(Object.assign({action}, data))});
+  return r.json();
+}
+async function loadOnline(){
+  if (!SHEETS_URL) return;
+  const ac = new AbortController(), timer = setTimeout(() => ac.abort(), 6000);
+  try {
+    const r = await fetch(SHEETS_URL + "?v=" + Date.now(), {signal: ac.signal});
+    const d = await r.json();
+    if (d && d.ok && Array.isArray(d.books) && d.books.length){
+      pub = d.books; online = true;
+      if (typeof d.serverNow === "number") offset = d.serverNow - Date.now();
+    }
+  } catch (e) { /* ohne Tabelle: lokale Werte bleiben */ }
+  clearTimeout(timer);
+}
 async function openApi(i, code){
-  const b = OFFLINE[i]; if (!b) return {ok: false, error: "bad"};
-  if (b.soon) return {ok: false, error: "soon"};
-  return (!b.code || code === b.code) ? {ok: true, title: b.title, text: b.text} : {ok: false, error: "wrong"};
+  if (online) return call("open", {i, code});
+  const b = OFFLINE[i], p = offlinePub()[i]; if (!b) return {ok: false, error: "bad"};
+  if (p.soon) return {ok: false, error: "soon"};
+  return (!b.code || code === b.code) ? {ok: true, title: b.title, body: b.body} : {ok: false, error: "wrong"};
 }
 async function adminApi(user, pass){
+  if (online) return call("adminRead", {user, pass});
   return (user === OFFLINE_ADMIN.user && pass === OFFLINE_ADMIN.pass) ? {ok: true, books: OFFLINE} : {ok: false, error: "auth"};
 }
-async function saveApi(i, rec){ Object.assign(OFFLINE[i], rec); return {ok: true}; }
+async function saveApi(i, rec){
+  if (online) return call("save", Object.assign({user: cred.user, pass: cred.pass, i}, rec));
+  Object.assign(OFFLINE[i], rec); return {ok: true};
+}
 
-// ---------- Zustand ----------
+// ---------- Allgemeines ----------
 const shelf = $("shelf");
-let pub = [], admin = false, cred = null, adminData = null;
 let current = null, entered = "", busy = false, fileIndex = null, lastFocus = null, lastIdx = null, toastTimer;
 
 function toast(t, ms){
@@ -220,16 +448,19 @@ function restoreFocus(){
   else if (lastIdx !== null){ const el = shelf.querySelector('.book[data-i="' + lastIdx + '"]'); if (el) el.focus(); }
 }
 
-// ---------- Regal ----------
+// ---------- Regal mit Countdown ----------
 function renderShelf(){
   shelf.innerHTML = "";
   COVERS.forEach((c, i) => {
-    const p = pub[i] || {title: "", soon: true, codeLen: 0};
+    const p = pub[i] || {title: "", soon: true, codeLen: 0, unlockAt: 0};
     const slot = document.createElement("div"); slot.className = "slot";
     const btn = document.createElement("button");
-    const free = admin || (!p.soon && !p.codeLen);
-    btn.type = "button"; btn.className = "book" + (free ? " open" : ""); btn.style.setProperty("--c", c.color); btn.dataset.i = i;
-    btn.innerHTML = '<span class="band"></span><span class="title"></span>' + lockSvg;
+    const free = admin || (!p.soon && !p.codeLen), at = Number(p.unlockAt) || 0;
+    const col = /^#[0-9a-f]{6}$/i.test(p.color || "") ? p.color : c.color;
+    btn.type = "button"; btn.className = "book" + (free ? " open" : ""); btn.style.setProperty("--c", col); btn.dataset.i = i;
+    btn.innerHTML = '<span class="plate"><span class="band"></span><span class="title"></span></span>'
+      + (p.soon && at ? '<span class="cd"><span>Öffnet in</span><b data-at="' + at + '"></b></span>' : "")
+      + (p.soon ? "" : '<span class="rb"></span>') + lockSvg;
     const band = btn.querySelector(".band"), title = btn.querySelector(".title");
     if (p.soon){
       band.innerHTML = glyphs((i + 1) * 7 + 1, 4, "small");
@@ -242,12 +473,36 @@ function renderShelf(){
     btn.addEventListener("click", () => openBook(i, btn));
     slot.appendChild(btn); shelf.appendChild(slot);
   });
+  tick();
 }
+let lastRefresh = 0, refreshing = false;
+function tick(){
+  const now = Date.now() + offset; let due = false;
+  document.querySelectorAll(".cd b").forEach(el => {
+    const left = Number(el.dataset.at) - now; el.textContent = fmt(left); if (left <= 0) due = true;
+  });
+  if (due) refresh();
+}
+async function refresh(){
+  if (refreshing || Date.now() - lastRefresh < 5000) return;
+  refreshing = true; lastRefresh = Date.now();
+  const before = pub.map(p => p.soon);
+  try { if (online) await loadOnline(); else pub = offlinePub(); } catch (e) {}
+  renderShelf();
+  if (pub.some((p, i) => before[i] && !p.soon)){ toast("Ein neues Buch wurde freigeschaltet!", 5000); Snd.ok(); }
+  refreshing = false;
+}
+setInterval(tick, 1000);
+
 async function openBook(i, btn){
   lastFocus = btn; lastIdx = i;
-  const p = pub[i] || {soon: true, codeLen: 0};
+  const p = pub[i] || {soon: true, codeLen: 0, unlockAt: 0};
   if (admin){ showEditor(i); return; }
-  if (p.soon){ toast("Dieses Buch ist noch nicht verfügbar."); return; }
+  Snd.click();
+  if (p.soon){
+    const left = p.unlockAt ? p.unlockAt - (Date.now() + offset) : 0;
+    toast(left > 0 ? "Dieses Buch öffnet sich in " + fmt(left) + "." : "Dieses Buch ist noch nicht verfügbar."); return;
+  }
   if (!p.codeLen){
     let res; try { res = await openApi(i, ""); } catch (e) { toast("Keine Verbindung. Bitte später nochmal versuchen."); return; }
     if (res.ok) showRead(i, res); else toast("Dieses Buch ist gerade nicht verfügbar.");
@@ -283,6 +538,7 @@ function press(k){
   if (busy) return;
   const n = pub[current].codeLen;
   if (k === "⌫"){ entered = entered.slice(0, -1); setMsg(""); renderDigits(); return; }
+  Snd.click();
   if (k === "OK") return check();
   if (entered.length < n){ entered += k; setMsg(""); renderDigits(); }
   if (entered.length === n) check();
@@ -294,8 +550,8 @@ async function check(){
   busy = true; setMsg("Prüfe …");
   let res; try { res = await openApi(current, entered); } catch (e) { res = {ok: false, error: "net"}; }
   busy = false;
-  if (res.ok){ $("codeOverlay").classList.remove("show"); showRead(current, res); return; }
-  entered = ""; renderDigits();
+  if (res.ok){ Snd.ok(); $("codeOverlay").classList.remove("show"); showRead(current, res); return; }
+  entered = ""; renderDigits(); Snd.bad();
   if (res.error === "soon"){ closeCode(); toast("Dieses Buch ist noch nicht verfügbar."); return; }
   setMsg(res.error === "wrong" ? "Falscher Code. Versuche es nochmal."
        : res.error === "wait"  ? "Zu viele Versuche. Bitte eine Minute warten."
@@ -304,54 +560,292 @@ async function check(){
   const box = $("codeBox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
 }
 
-// ---------- Akte lesen ----------
-function showRead(i, res){
-  const t = $("fileText"); t.innerHTML = ""; fileIndex = null; $("saveFile").hidden = true;
-  $("fileTitle").textContent = res.title; $("fileSub").textContent = COVERS[i].band;
-  res.text.forEach(p => { const el = document.createElement("p"); el.textContent = p; t.appendChild(el); });
+// <pagination>
+const MC_COLORS = {"0":"#1a1a1a","1":"#1c2fa8","2":"#1f8a1f","3":"#138a8a","4":"#a01818","5":"#8a1c8a","6":"#c98a00","7":"#7a7a7a",
+  "8":"#4a4a4a","9":"#3b5bdb","a":"#2f9e2f","b":"#1fa3a3","c":"#d63a3a","d":"#c93ac9","e":"#e8c200","f":"#ffffff"};
+const MC_LITE = {e: 1, f: 1};
+const MC_RESET = {code: "", b: false, i: false, u: false, s: false, k: false};
+function okSrc(s){
+  return /^https:\/\/[^\s"'<>]+$/i.test(s) || (/^[\w\-./]+$/.test(s) && s.charAt(0) !== "/" && s.indexOf("..") < 0);
+}
+// Zerlegt Text mit Minecraft-Codes (&c rot, &l fett, &r zurück, &#ff8800 eigene Farbe, && = &) in Stücke
+function styled(text){
+  const segs = [], re = /&&|[&§](#[0-9a-f]{6}|[0-9a-fk-or])/gi;
+  let st = Object.assign({}, MC_RESET), last = 0, m;
+  const push = t => { if (t) segs.push(Object.assign({text: t}, st)); };
+  while ((m = re.exec(text))){
+    push(text.slice(last, m.index)); last = re.lastIndex;
+    if (m[0] === "&&"){ push("&"); continue; }
+    const c = m[1].toLowerCase();
+    if (c.charAt(0) === "#" || /[0-9a-f]/.test(c)) st = Object.assign({}, MC_RESET, {code: c});
+    else if (c === "l") st = Object.assign({}, st, {b: true});
+    else if (c === "o") st = Object.assign({}, st, {i: true});
+    else if (c === "n") st = Object.assign({}, st, {u: true});
+    else if (c === "m") st = Object.assign({}, st, {s: true});
+    else if (c === "k") st = Object.assign({}, st, {k: true});
+    else st = Object.assign({}, MC_RESET);
+  }
+  push(text.slice(last));
+  return {segs, state: st};
+}
+function stateCodes(st){
+  return (st.code ? "&" + st.code : "") + (st.b ? "&l" : "") + (st.i ? "&o" : "") + (st.u ? "&n" : "") + (st.s ? "&m" : "") + (st.k ? "&k" : "");
+}
+function appendStyled(parent, text){
+  styled(text).segs.forEach(g => {
+    const sp = document.createElement("span"); sp.textContent = g.text;
+    let css = "";
+    if (g.code) css += "color:" + (g.code.charAt(0) === "#" ? g.code : MC_COLORS[g.code]) + ";";
+    const sh = [];
+    if (MC_LITE[g.code]) sh.push("1px 1px 0 #000", "-1px 1px 0 #000", "1px -1px 0 #000", "-1px -1px 0 #000");
+    if (g.b) sh.push("1px 0 0 currentColor");
+    if (sh.length) css += "text-shadow:" + sh.join(",") + ";";
+    if (g.i) css += "font-style:italic;";
+    const td = []; if (g.u) td.push("underline"); if (g.s) td.push("line-through");
+    if (td.length) css += "text-decoration:" + td.join(" ") + ";";
+    if (css) sp.style.cssText = css;
+    if (g.k){ sp.className = "obf"; sp.dataset.t = g.text; }
+    parent.appendChild(sp);
+  });
+}
+function parseBody(body){
+  const blocks = []; let buf = [];
+  const flush = () => { if (buf.length){ const t = buf.join("\n").trim(); if (t) blocks.push({t: "p", text: t}); buf = []; } };
+  String(body || "").replace(/\r/g, "").split("\n").forEach(line => {
+    const l = line.trim(); let m;
+    if (l === "") flush();
+    else if (/^-{3,}$/.test(l)){ flush(); blocks.push({t: "break"}); }
+    else if ((m = l.match(/^\[bild:\s*([^\]|]+?)\s*(?:\|\s*([^\]]*))?\]$/i))){ flush(); blocks.push({t: "img", src: m[1], cap: (m[2] || "").trim()}); }
+    else if (l.indexOf("# ") === 0){ flush(); blocks.push({t: "h", text: l.slice(2).trim()}); }
+    else buf.push(line);
+  });
+  flush();
+  return blocks;
+}
+function buildPageDom(blocks, el, measure){
+  el.textContent = "";
+  blocks.forEach(b => {
+    if (b.t === "title"){
+      const d = document.createElement("div"); d.className = "tp";
+      [["tb", String(bk.band).toUpperCase()], ["tt", bk.title], ["orn", ""], ["stamp", "VERTRAULICH"]].forEach(([cls, txt]) => {
+        const x = document.createElement("div"); x.className = cls; if (txt) x.textContent = txt; d.appendChild(x);
+      });
+      el.appendChild(d);
+    } else if (b.t === "img"){
+      const f = document.createElement("figure"), im = document.createElement("img");
+      im.alt = b.cap || "Bild";
+      if (!measure){
+        if (okSrc(b.src)){ im.referrerPolicy = "no-referrer"; im.src = b.src; } else im.alt = "Bild ungültig";
+        im.addEventListener("error", () => { im.removeAttribute("src"); im.alt = "Bild nicht gefunden"; });
+      }
+      f.appendChild(im);
+      if (b.cap){ const c = document.createElement("figcaption"); c.textContent = b.cap; f.appendChild(c); }
+      el.appendChild(f);
+    } else if (b.t === "h"){
+      const h = document.createElement("h3"); appendStyled(h, b.text); el.appendChild(h);
+    } else {
+      const p = document.createElement("p"); appendStyled(p, b.text); el.appendChild(p);
+    }
+  });
+}
+function paginate(blocks, el){
+  const pages = []; let cur = [];
+  const fit = arr => { buildPageDom(arr, el, true); return el.scrollHeight <= el.clientHeight + 1; };
+  const flush = () => { if (cur.length) pages.push(cur); cur = []; };
+  blocks.forEach(b => {
+    if (b.t === "break"){ flush(); return; }
+    if (b.t === "img" || b.t === "h"){ if (cur.length && !fit(cur.concat([b]))) flush(); cur.push(b); return; }
+    let rest = b.text;
+    while (rest){
+      if (fit(cur.concat([{t: "p", text: rest}]))){ cur.push({t: "p", text: rest}); rest = ""; break; }
+      const tk = rest.split(/(\s+)/);
+      let lo = 0, hi = tk.length - 1;
+      while (lo < hi){
+        const mid = Math.ceil((lo + hi) / 2), part = tk.slice(0, mid).join("").trimEnd();
+        if (part && fit(cur.concat([{t: "p", text: part}]))) lo = mid; else hi = mid - 1;
+      }
+      if (lo === 0){ if (cur.length){ flush(); continue; } lo = Math.min(2, tk.length); }
+      const head = tk.slice(0, lo).join("").trimEnd();
+      cur.push({t: "p", text: head}); flush();
+      rest = tk.slice(lo).join("").trimStart();
+      if (rest && !styled(rest).segs.some(g => g.text.trim())) rest = "";
+      if (rest) rest = stateCodes(styled(head).state) + rest;
+    }
+  });
+  flush();
+  if (!pages.length) pages.push([{t: "p", text: "Diese Seite ist leer."}]);
+  return pages;
+}
+// </pagination>
+
+// ---------- Buch ----------
+const bk = {pages: [], idx: 0, body: "", band: "", title: "", ret: null, busy: false};
+const wideMq = matchMedia("(min-width: 760px)");
+let obfTimer = null;
+function stepSize(){ return wideMq.matches ? 2 : 1; }
+function colorOf(i){ const c = pub[i] && pub[i].color; return /^#[0-9a-f]{6}$/i.test(c || "") ? c : COVERS[i].color; }
+async function openViewer(title, band, body, color, ret){
+  bk.body = body; bk.band = band; bk.title = title; bk.ret = ret || null;
+  $("bkTitle").textContent = band + " – " + title;
+  $("bkBox").style.setProperty("--cv", color);
+  $("bookOverlay").classList.add("show");
+  if (document.fonts && document.fonts.ready){ try { await document.fonts.ready; } catch (e) {} }
+  layoutBook(0); Snd.open(); $("bkPage").focus();
+}
+function layoutBook(idx, ratio){
+  bk.pages = [[{t: "title"}]].concat(paginate(parseBody(bk.body), $("bkPage")));
+  if (ratio !== undefined) idx = Math.round(ratio * (bk.pages.length - 1));
+  idx = Math.max(0, Math.min(idx, bk.pages.length - 1));
+  bk.idx = idx - idx % stepSize();
+  renderSpread();
+}
+function startObf(){
+  clearInterval(obfTimer);
+  if (reduceMotion) return;
+  const els = document.querySelectorAll("#bookOverlay .obf"); if (!els.length) return;
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789#%&?!";
+  obfTimer = setInterval(() => els.forEach(el => {
+    el.textContent = Array.from(el.dataset.t).map(c => /\s/.test(c) ? c : chars.charAt(Math.floor(Math.random() * chars.length))).join("");
+  }), 90);
+}
+function renderSpread(){
+  const step = stepSize(), a = bk.idx, b = a + 1, n = bk.pages.length;
+  buildPageDom(bk.pages[a], $("bkPage"), false); $("pnL").textContent = a === 0 ? "" : "– " + a + " –";
+  if (step === 2){
+    if (b < n){ buildPageDom(bk.pages[b], $("bkPage2"), false); $("pnR").textContent = "– " + b + " –"; }
+    else { $("bkPage2").textContent = ""; $("pnR").textContent = ""; }
+  }
+  $("bkCount").textContent = "Seite " + (a + 1) + (step === 2 && b < n ? "–" + (b + 1) : "") + " von " + n;
+  $("bkPrev").hidden = a === 0; $("bkNext").hidden = a + step >= n;
+  startObf();
+}
+function turn(dir){
+  const step = stepSize(), na = bk.idx + dir * step;
+  if (bk.busy || na < 0 || na >= bk.pages.length) return;
+  Snd.page();
+  if (reduceMotion){ bk.idx = na; renderSpread(); return; }
+  bk.busy = true;
+  const leaf = $(step === 2 && dir > 0 ? "leafR" : "leafL");
+  leaf.classList.remove("turning"); void leaf.offsetWidth; leaf.classList.add("turning");
+  setTimeout(() => { bk.idx = na; renderSpread(); }, 110);
+  setTimeout(() => { leaf.classList.remove("turning"); bk.busy = false; }, 230);
+}
+function closeViewer(){
+  clearInterval(obfTimer);
+  $("bookOverlay").classList.remove("show");
+  if (bk.ret && document.contains(bk.ret)) bk.ret.focus(); else restoreFocus();
+}
+function showRead(i, res){ openViewer(res.title, COVERS[i].band, res.body, colorOf(i), lastFocus); }
+$("bkPrev").addEventListener("click", () => turn(-1));
+$("bkNext").addEventListener("click", () => turn(1));
+$("bkDone").addEventListener("click", closeViewer);
+$("bookOverlay").addEventListener("click", e => { if (e.target === $("bookOverlay")) closeViewer(); });
+(function swipe(){
+  let sx = null; const box = $("bkBox");
+  box.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, {passive: true});
+  box.addEventListener("touchend", e => {
+    if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 45) turn(dx < 0 ? 1 : -1);
+  }, {passive: true});
+})();
+let rsz = null;
+addEventListener("resize", () => {
+  clearTimeout(rsz);
+  rsz = setTimeout(() => {
+    if (!$("bookOverlay").classList.contains("show")) return;
+    layoutBook(0, bk.pages.length > 1 ? bk.idx / (bk.pages.length - 1) : 0);
+  }, 150);
+});
+
+// ---------- Editor (nur Admin) ----------
+const MC_NAMES = {"0":"Schwarz","1":"Dunkelblau","2":"Dunkelgrün","3":"Dunkeltürkis","4":"Dunkelrot","5":"Lila","6":"Gold","7":"Grau",
+  "8":"Dunkelgrau","9":"Blau","a":"Grün","b":"Türkis","c":"Rot","d":"Pink","e":"Gelb","f":"Weiß"};
+function insertCode(code){
+  const ta = $("editBody"), s = ta.selectionStart, e = ta.selectionEnd, v = ta.value, tag = "&" + code;
+  if (e > s && code !== "r"){
+    ta.value = v.slice(0, s) + tag + v.slice(s, e) + "&r" + v.slice(e);
+    ta.selectionStart = s + tag.length; ta.selectionEnd = e + tag.length;
+  } else { ta.value = v.slice(0, s) + tag + v.slice(e); ta.selectionStart = ta.selectionEnd = s + tag.length; }
+  ta.focus();
+}
+function buildToolbar(){
+  const tb = $("tb"); tb.textContent = "";
+  Object.keys(MC_COLORS).forEach(k => {
+    const b = document.createElement("button"); b.type = "button"; b.style.background = MC_COLORS[k];
+    b.title = MC_NAMES[k]; b.setAttribute("aria-label", MC_NAMES[k]); b.addEventListener("click", () => insertCode(k)); tb.appendChild(b);
+  });
+  [["l", "B", "Fett"], ["o", "I", "Kursiv"], ["n", "U", "Unterstrichen"], ["m", "S", "Durchgestrichen"], ["k", "?", "Zauberschrift"], ["r", "Reset", "Zurücksetzen"]]
+    .forEach(([c, t, n]) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "f"; b.textContent = t; b.title = n;
+      b.setAttribute("aria-label", n); b.addEventListener("click", () => insertCode(c)); tb.appendChild(b);
+    });
+  const pick = document.createElement("input"); pick.type = "color"; pick.value = "#ff8800"; pick.title = "Eigene Farbe"; pick.setAttribute("aria-label", "Eigene Farbe");
+  pick.addEventListener("change", () => insertCode(pick.value)); tb.appendChild(pick);
+}
+function showEditor(i){
+  const d = adminData[i], t = $("fileText");
+  fileIndex = i;
+  $("fileTitle").textContent = "Akte bearbeiten"; $("fileSub").textContent = COVERS[i].band;
+  t.innerHTML = '<label for="editTitle">Titel</label><input id="editTitle" type="text">'
+    + '<label for="editColor">Farbe des Buchs</label><input id="editColor" type="color">'
+    + '<label for="editCode">Code (nur Ziffern, höchstens 8; leer = ohne Code offen)</label>'
+    + '<input id="editCode" type="text" inputmode="numeric" maxlength="8" autocomplete="off">'
+    + '<label class="chk"><input id="editSoon" type="checkbox"><span>Gesperrt / noch nicht verfügbar (Besucher können das Buch nicht öffnen, das Cover zeigt Zauberschrift)</span></label>'
+    + '<label for="editUnlock">Automatisch freischalten am (TT.MM.JJJJ HH:MM, deutsche Zeit; leer = nicht automatisch)</label>'
+    + '<input id="editUnlock" type="text" placeholder="09.11.2026 18:00" autocomplete="off">'
+    + '<label for="editBody">Text (Text markieren, dann Farbe oder Stil wählen)</label><div class="tb" id="tb"></div><textarea id="editBody"></textarea>'
+    + '<p class="hint">Leere Zeile = neuer Absatz. Zeile --- = neue Seite. Zeile # Überschrift = Überschrift. Bild: Zeile [bild: bilder/name.png | Beschriftung]. Farben und Stil auch als Code: &amp;c rot, &amp;9 blau, &amp;6 gold, &amp;l fett, &amp;o kursiv, &amp;n unterstrichen, &amp;m durchgestrichen, &amp;k Zauberschrift, &amp;r zurücksetzen, &amp;#ff8800 eigene Farbe, &amp;&amp; für ein echtes &amp;-Zeichen.</p>'
+    + '<p class="hint" id="editHint"></p>';
+  $("editHint").textContent = online ? "Wird in der Google-Tabelle gespeichert und gilt sofort für alle."
+                                     : "Nicht mit der Tabelle verbunden: Die Änderung gilt nur, bis du die Seite neu lädst.";
+  $("editTitle").value = d.title; $("editCode").value = d.code; $("editSoon").checked = !!d.soon;
+  $("editColor").value = /^#[0-9a-f]{6}$/i.test(d.color || "") ? d.color : COVERS[i].color;
+  $("editUnlock").value = d.unlock || ""; $("editBody").value = d.body;
+  buildToolbar();
   $("fileOverlay").classList.add("show"); $("closeFile").focus();
 }
 function closeFile(){ $("fileOverlay").classList.remove("show"); restoreFocus(); }
-
-// ---------- Editor (nur Admin) ----------
-function showEditor(i){
-  const d = adminData[i], t = $("fileText");
-  fileIndex = i; $("saveFile").hidden = false;
-  $("fileTitle").textContent = "Akte bearbeiten"; $("fileSub").textContent = COVERS[i].band;
-  t.innerHTML = '<label for="editTitle">Titel</label><input id="editTitle" type="text">'
-    + '<label for="editCode">Code (nur Ziffern, höchstens 8; leer = ohne Code offen)</label>'
-    + '<input id="editCode" type="text" inputmode="numeric" maxlength="8" autocomplete="off">'
-    + '<label class="chk"><input id="editSoon" type="checkbox"><span>Noch nicht verfügbar (Besucher können das Buch nicht öffnen, das Cover zeigt Zauberschrift)</span></label>'
-    + '<label for="editText">Text (Leerzeile = neuer Absatz)</label><textarea id="editText"></textarea>'
-    + '<p class="hint" id="editHint"></p>';
-  $("editHint").textContent = "Die Änderung gilt nur, bis du die Seite neu lädst. Dauerhaft ändern geht in der Datei index.html.";
-  $("editTitle").value = d.title; $("editCode").value = d.code; $("editSoon").checked = d.soon; $("editText").value = d.text.join("\n\n");
-  $("fileOverlay").classList.add("show"); $("closeFile").focus();
-}
 async function saveFile(){
-  const i = fileIndex, code = $("editCode").value.trim();
+  const i = fileIndex, code = $("editCode").value.trim(), unlock = $("editUnlock").value.trim();
   if (!/^\d{0,8}$/.test(code)){ toast("Code: nur Ziffern, höchstens 8."); return; }
-  const rec = {
-    title: $("editTitle").value.trim() || adminData[i].title, code, soon: $("editSoon").checked,
-    text: $("editText").value.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean)
-  };
-  if (!rec.text.length) rec.text = ["Text folgt."];
+  if (unlock && !parseGerman(unlock)){ toast("Freischaltung: TT.MM.JJJJ HH:MM, zum Beispiel 09.11.2026 18:00.", 5000); return; }
+  const rec = {title: ($("editTitle").value.trim() || adminData[i].title).slice(0, 200), code, soon: $("editSoon").checked, unlock,
+               color: $("editColor").value, body: $("editBody").value.replace(/\r/g, "").trim()};
+  if (!rec.body) rec.body = "Text folgt.";
   $("saveFile").disabled = true; toast("Speichere …", 8000);
-  try {
-    const r = await saveApi(i, rec);
-    if (r && r.ok){
-      adminData[i] = Object.assign(adminData[i], rec);
-      pub[i] = {title: rec.soon ? "" : rec.title, soon: rec.soon, codeLen: rec.code.length};
-      renderShelf();
-      toast("Gespeichert (nur bis zum Neuladen).", 4000);
-    } else toast(r && r.error === "auth" ? "Login ungültig. Melde dich neu an." : "Speichern fehlgeschlagen.", 5000);
-  } catch (e) { toast("Speichern fehlgeschlagen.", 5000); }
+  let r = null, err = "";
+  try { r = await saveApi(i, rec); } catch (e) { err = String((e && e.message) || e); }
+  let saved = !!(r && r.ok);
+  if (!saved && online && !(r && r.error === "auth")){
+    // Manchmal kommt die Antwort nicht an, obwohl gespeichert wurde: nachprüfen
+    try {
+      const chk = await adminApi(cred.user, cred.pass), b = chk && chk.ok && chk.books[i];
+      saved = !!b && b.title === rec.title && b.code === rec.code && !!b.soon === rec.soon && (b.unlock || "") === rec.unlock
+              && (b.color || "").toLowerCase() === rec.color.toLowerCase() && b.body === rec.body;
+    } catch (e2) {}
+  }
+  if (saved){
+    adminData[i] = Object.assign(adminData[i], rec);
+    try { if (online) await loadOnline(); else pub = offlinePub(); } catch (e) {}
+    renderShelf();
+    toast(online ? "Gespeichert. Gilt sofort für alle." : "Gespeichert (nur bis zum Neuladen).", 4000);
+  } else if (r && r.error === "auth"){
+    toast("Login ungültig. Melde dich neu an.", 5000);
+  } else {
+    toast("Speichern fehlgeschlagen" + (r && r.message ? ": " + r.message : r && r.error ? " (" + r.error + ")" : err ? " (" + err + ")" : "") + ".", 8000);
+  }
   $("saveFile").disabled = false;
 }
+$("saveFile").addEventListener("click", saveFile);
+$("previewFile").addEventListener("click", () =>
+  openViewer($("editTitle").value.trim() || "Vorschau", COVERS[fileIndex].band, $("editBody").value, $("editColor").value, $("previewFile")));
+$("closeFile").addEventListener("click", closeFile);
 
 // ---------- Admin-Login ----------
 function updateAdmin(){
   $("loginForm").hidden = admin; $("loggedIn").hidden = !admin;
+  $("conn").hidden = !(admin && SHEETS_URL);
+  $("conn").textContent = online ? "Tabelle: verbunden" : "Tabelle: NICHT verbunden";
   renderShelf();
 }
 $("loginForm").addEventListener("submit", async e => {
@@ -369,11 +863,15 @@ $("logout").addEventListener("click", () => { admin = false; cred = null; adminD
 
 // ---------- Dialoge ----------
 $("cancel").addEventListener("click", closeCode);
-$("saveFile").addEventListener("click", saveFile);
-$("closeFile").addEventListener("click", closeFile);
 [["codeOverlay", closeCode], ["fileOverlay", closeFile]].forEach(([id, fn]) =>
   $(id).addEventListener("click", e => { if (e.target === $(id)) fn(); }));
 document.addEventListener("keydown", e => {
+  if ($("bookOverlay").classList.contains("show")){
+    if (e.key === "ArrowRight" || e.key === "PageDown") turn(1);
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") turn(-1);
+    else if (e.key === "Escape") closeViewer();
+    return;
+  }
   if ($("codeOverlay").classList.contains("show")){
     if (e.key >= "0" && e.key <= "9") press(e.key);
     else if (e.key === "Backspace") press("⌫");
@@ -383,8 +881,11 @@ document.addEventListener("keydown", e => {
 });
 
 // ---------- Start ----------
-pub = OFFLINE.map(b => ({title: b.soon ? "" : b.title, soon: b.soon, codeLen: b.code.length}));
-renderShelf();
+(async function init(){
+  pub = offlinePub();
+  if (SHEETS_URL){ shelf.innerHTML = '<p class="load">Lade Akten …</p>'; await loadOnline(); }
+  renderShelf();
+})();
 </script>
 </body>
 </html>
